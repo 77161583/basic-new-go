@@ -2,6 +2,7 @@
 package genericTool
 
 import (
+	"fmt"
 	"reflect"
 	"testing"
 )
@@ -40,4 +41,32 @@ func TestSliceHelper_Add(t *testing.T) {
 	if !reflect.DeepEqual(resultSlice, expected) {
 		t.Errorf("Add方法返回了不正确的结果: %v, got: %v", expected, resultSlice)
 	}
+}
+
+func TestSliceHelperImpl_Remove(t *testing.T) {
+	//slice := []int{1, 2, 3, 4, 5}
+	slice := []string{"a", "b", "c", "d"}
+	index := 0
+
+	helper := NewSliceHelper()
+	result, err := helper.Remove(slice, index)
+	if err != nil {
+		t.Errorf("Remove method returned error: %v", err)
+	}
+
+	expected := []string{"b", "c", "d"}
+	fmt.Printf("Type of result: %T\n", result)
+
+	resultSlice, ok := result.([]string)
+	if !ok {
+		t.Errorf("Remove method did not return a slice")
+	}
+
+	fmt.Printf("期待结果: %v\n", expected)
+	fmt.Printf("输出结果: %v\n", resultSlice)
+
+	if !reflect.DeepEqual(resultSlice, expected) {
+		t.Errorf("Remove method returned incorrect result. Expected: %v, got: %v", expected, resultSlice)
+	}
+
 }
