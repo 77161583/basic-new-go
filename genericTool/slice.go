@@ -10,6 +10,7 @@ type SliceHelper interface {
 	Add(slice interface{}, element interface{}) (interface{}, error)
 	Remove(slice interface{}, index int) (interface{}, error)
 	RemoveRange(start int, end int, slice interface{}) (interface{}, error)
+	IndexOf(slice interface{}, element interface{}) (int, error)
 }
 
 // 切片辅助方法的具体实现
@@ -99,8 +100,39 @@ func (s *sliceHelperImpl) RemoveRange(start int, end int, slice interface{}) (in
 		return sliceValue.Slice(newStart, sliceLen).Interface(), nil
 	default:
 		// 直接在原始切片上进行操作
-		newSlice := sliceValue.Slice(0, newStart).Interface().([]interface{})
-		newSlice = append(newSlice, sliceValue.Slice(end, sliceLen).Interface().([]interface{})...)
-		return newSlice, nil
+		newSlice := reflect.MakeSlice(sliceValue.Type(), 0, 0)
+		for i := 0; i < newStart; i++ {
+			newSlice = reflect.Append(newSlice, sliceValue.Index(i))
+		}
+		for i := end; i < sliceLen; i++ {
+			newSlice = reflect.Append(newSlice, sliceValue.Index(i))
+		}
+		return newSlice.Interface(), nil
 	}
+}
+
+// IndexOf 方法用于查找元素在切片中的索引值
+func (s *sliceHelperImpl) IndexOf(slice interface{}, element interface{}) (int, error) {
+	// 使用反射获取传入切片的值
+	sliceValue := reflect.ValueOf(slice)
+
+	// 检查传入的值是否是切片类型
+	if sliceValue.Kind() != reflect.Slice {
+		return -1, errors.New("输入的不是一个切片")
+	}
+
+	// 将要查找的元素转换为 reflect.Value 类型的值
+	elementValue := reflect.ValueOf(element)
+
+	// 遍历切片中的每个元素
+	for i := 0; i < sliceValue.Len(); i++ {
+		// 使用反射比较切片中的当前元素与要查找的元素是否相等
+		if reflect.DeepEqual(sliceValue.Index(i).Interface(), elementValue.Interface()) {
+			// 如果相等，则返回当前元素的索引值
+			return i, nil
+		}
+	}
+
+	// 如果未找到相等的元素，则返回 -1 表示未找到
+	return -1, nil
 }
