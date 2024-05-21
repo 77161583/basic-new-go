@@ -1,21 +1,16 @@
 package main
 
-import (
-	"basic-new-go/genericTool"
-	"fmt"
-)
+import "fmt"
+
+func DeferTwo() (a int) {
+	a = 0
+	defer func() {
+		fmt.Println("Inside defer:", a) // 这将打印 "Inside defer: 1"
+		a = 1
+	}()
+	return a // 这将返回 0
+}
 
 func main() {
-	// Your main function code here
-	slice := []string{"3", "asd", "qq"}
-	element := "11"
 
-	helper := genericTool.NewSliceHelper()
-	res, err := helper.Add(slice, element)
-	if err != nil {
-		fmt.Println("报错了")
-		return
-	}
-
-	fmt.Println("Result:", res)
 }
