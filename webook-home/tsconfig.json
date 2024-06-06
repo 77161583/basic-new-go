@@ -1,0 +1,46 @@
+{
+  "compilerOptions": {
+    "target": "ES2018",
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "noImplicitAny": false, // 是否在表达式和声明上有隐含的any类型时报错
+    "lib": [
+      "ESNext",
+      "ESNext.AsyncIterable",
+      "DOM"
+    ],
+    "esModuleInterop": true,
+    "allowJs": true,
+    "sourceMap": true,
+    "strict": true,
+    "noEmit": true,
+    "experimentalDecorators": true,
+    "suppressImplicitAnyIndexErrors": true,
+    "jsx": "preserve",
+    "baseUrl": ".",
+    "paths": {
+      "~/*": [
+        "./*"
+      ],
+      "@/*": [
+        "./*"
+      ]
+    },
+    "types": [
+      "@nuxt/types",
+      "@nuxtjs/axios",
+      "@types/node",
+      "@types/jquery",
+      "cookie-universal-nuxt/types",
+      "@types/blueimp-md5",
+      "types/index.d.ts"
+    ]
+  },
+  "exclude": [
+    "node_modules",
+    ".nuxt",
+    "nuxt-dist",
+    "dist",
+    "*.ts"
+  ]
+}

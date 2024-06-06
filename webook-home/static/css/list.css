@@ -1,0 +1,292 @@
+/* 面包屑 */
+
+.crumbs {
+    margin: 20px;
+}
+
+.crumbs a,
+.crumbs span {
+    font-size: 14px;
+    color: #666;
+}
+
+.crumbs span {
+    margin-right: 15px;
+    padding-right: 30px;
+    background: url(../images/more_icon.png) no-repeat right center;
+}
+
+.crumbs span:last-child {
+    background: none;
+}
+
+.crumbs .home {
+    padding-right: 30px;
+    background: url(../images/more_icon.png) no-repeat right center;
+    margin-right: 15px;
+}
+
+
+/* 分页 */
+
+.pageBox {
+    margin-top: 80px;
+}
+
+.pageBox span {
+    color: #909090;
+    font-size: 16px;
+    line-height: 30px;
+    margin-right: 40px;
+}
+
+.pageBox i {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    background: rgba(229, 229, 229, 1);
+    border-radius: 5px;
+    text-align: center;
+    line-height: 30px;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+.pageBox i:hover {
+    background: #2B53A7
+}
+
+.pageBox a {
+    color: #575757;
+    font-size: 16px;
+    line-height: 30px;
+    cursor: pointer;
+    margin: 0 22px;
+    font-weight: 600;
+}
+
+.pageBox a:hover,
+.pageBox a.active {
+    color: #2B53A7
+}
+
+
+/* 列表 */
+
+.list_box li {
+    height: 220px;
+    border: 1px solid #d2d2d2;
+    background: #fff;
+    padding: 30px 28px;
+    margin-bottom: 30px;
+}
+
+.list_box li img {
+    transition: all 0.6s;
+}
+
+.list_box li:hover img {
+    transform: scale(1.1);
+}
+
+.list_box .list_left {
+    width: 279px;
+    height: 159px;
+    overflow: hidden;
+}
+
+.list_box .list_right {
+    width: 842px;
+}
+
+.list_box .list_right h1 a {
+    color: #000;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.list_box .list_right h1 a:hover {
+    text-decoration: underline;
+}
+
+.list_box .list_right p,
+.list_box .list_right p span {
+    color: #808080;
+    line-height: 28px;
+}
+
+.detail_box {
+    width: 1098px;
+    border: 1px solid #d2d2d2;
+    background: #fff;
+    padding: 20px 50px;
+}
+
+.detail_box .pub {
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+
+/* 课程 */
+
+.course_list .course_warp .course_main ul {
+    width: 1230px;
+}
+
+
+/* 专业课切换 */
+
+.navline-hy .nav-current {
+    position: absolute;
+    bottom: -1px;
+    height: 3px;
+    background: #045FDD;
+}
+
+.navline-hy {
+    border-bottom: 1px solid #dcdcdc;
+    height: auto;
+    overflow: hidden;
+    padding: 20px;
+    box-shadow: 0px 3px 10px 10px #eee;
+    margin-bottom: 20px;
+}
+
+.navline-hy .listab {
+    width: 1042px;
+    height: auto;
+    overflow: hidden;
+    border: none;
+}
+
+.navline-hy .listab li {
+    float: left;
+    margin: 0 10px;
+    line-height: 32px;
+}
+
+.navline-hy .listab li a {
+    font-size: 16px;
+    color: #000;
+    display: inline-block;
+    line-height: 30px
+}
+
+.navline-hy .listab li a.active {
+    color: #045FDD;
+    border-bottom: 1px solid #045FDD;
+}
+
+.navline-hy .listab li a:hover {
+    color: #045FDD;
+}
+
+.navline-hy a.all {
+    color: #045FDD;
+    line-height: 30px;
+}
+
+.navline-hy .morebtn {
+    cursor: pointer;
+}
+
+.tabdown {
+    display: none;
+}
+
+.navline-hy.fold {
+    height: 32px;
+}
+
+.navline-hy.fold .listab {
+    height: 32px;
+}
+
+
+/* 课程详情 */
+
+.detailBox,
+.detailRich_text,
+.mapBox {
+    margin-top: 30px;
+}
+
+.detailBox .detailBox_left {
+    width: 597px;
+    height: 338px;
+    margin-right: 47px;
+}
+
+.detailBox .detailBox_right {
+    width: 550px;
+}
+
+.detailBox .detailBox_right h1 {
+    font-size: 24px;
+    font-family: 'Lantinghei SC';
+    font-weight: 800;
+    color: rgba(0, 0, 0, 1);
+    margin: 15px 0 40px;
+}
+
+.detailBox .detailBox_right p {
+    margin-top: 32px;
+}
+
+.detailBox .detailBox_right p label {
+    color: #045FDD;
+    font-size: 18px;
+}
+
+.detailBox .detailBox_right p span {
+    font-size: 18px;
+    color: #000000
+}
+
+.detailRich_text .richText {
+    background: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(220, 220, 220, 1);
+    padding: 42px 40px;
+}
+
+.playVideo,
+.videoShade {
+    width: 592px;
+    height: 332px;
+}
+
+.videoShade {
+    background: url("../images/videotop.png") repeat left top;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+}
+
+.videoShade p {
+    margin-top: 124px;
+}
+
+.titleBox {
+    /* background: url("../images/titleline.png") no-repeat left bottom; */
+    padding-bottom: 6px;
+}
+
+.titleBoxIn {
+    height: 32px;
+    background: rgba(238, 238, 238, 1);
+    line-height: 32px;
+}
+
+.titleBoxIn h1 {
+    width: 180px;
+    height: 41px;
+    background: url("../images/titlebg.png") no-repeat left center;
+    text-align: center;
+    line-height: 41px;
+    color: #fff;
+    font-size: 22px;
+    position: absolute;
+    left: 0;
+    bottom: 0px;
+}

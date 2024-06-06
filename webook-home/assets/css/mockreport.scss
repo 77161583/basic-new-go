@@ -1,0 +1,126 @@
+.mockreport{
+    width: 1424px;
+    margin: 0 auto;
+    padding: 126px 0 0 0;
+}
+.page-mock-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    dt{
+        font-size: 18px;
+        color: #E5002D;
+    }
+    dd{
+        font-size: 20px;
+        color: #404040;
+    }
+}
+.report_cont{
+    width:100%;
+    .report_header{
+        width: 1220px;
+        height: 364px;
+        background: url(@/assets/images/reportheaderbg.png) no-repeat center center;
+        background-size: 100% 100%;
+        display: flex;
+        padding: 60px 80px;
+        box-sizing: border-box;
+        margin: 0 auto;
+        .header_left{
+            flex: 1;
+            font-size: 20px;
+            .mymark{
+                color: #404040;
+            }
+            .marknum{
+                font-size: 48px;
+                font-weight: bold;
+                color: #E5002D;
+                letter-spacing: -2px;
+            }
+            .usetime{
+                color: #9C9C9C;
+                font-size: 16px;
+                display: inline-block;
+                padding: 0 0 30px 0;
+            }
+            .report_detail{
+                margin: 28px 0 0 0;
+                display: flex;
+                justify-content: space-between;
+                dl{
+                    text-align: center;
+                    font-size: 20px;
+                    color: #404040;
+                    dd{
+                        font-size: 16px;
+                        color: #9C9C9C;
+                    }
+                }
+            }
+        }
+        .header_right{
+            flex: 1;
+            margin-left: 80px;
+            h5{
+                font-size: 20px;
+                color: #404040;
+                margin: 0 0 5px 0;
+            }
+            .testlist{
+                color: #404040;
+                font-size: 16px;
+                .olki{
+                    margin: 20px 0;
+                    display: flex;
+                    align-items: center;
+                    .redline{
+                        margin-right: 5px;
+                    }
+                    .markdetail{
+                        color: #7E7E7E;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+    .report_body{
+        width: 1220px;
+        margin: 0 auto;
+        .probledes{
+            margin: 20px 0 0 0;
+            h4{
+                color: #000;
+                font-size: 20px;
+                font-weight: bold;
+            }
+            .require{
+                color: #939393;
+                font-size: 16px;
+                margin: 10px 0 20px 20px;
+            }
+            .typejudge{
+                font-size: 16px;
+                color: #E5002D;
+                margin: 0 0 0 20px;
+            }
+            .myreply{
+                font-size: 18px;
+                color: #000;
+                font-weight: bold;
+                margin: 30px 0 10px 20px;
+            }
+            .myanswer{
+                width: 100%;
+                min-height: 120px;
+                padding: 25px 20px;
+                background-color: #fff;
+                border-radius: 10px;
+                box-sizing: border-box;
+                box-shadow: 0 0 10px 5px #e7e6e6;
+            }
+        }
+    }
+}

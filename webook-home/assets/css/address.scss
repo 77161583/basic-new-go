@@ -1,0 +1,121 @@
+.page-my-address {
+    margin: 40px 0;
+    padding: 96px 0 0 0;
+    .address-num-tip {
+        margin:50px 0 24px;
+        line-height: 1;
+        font-size: 26px;
+        color: #000;
+    }
+    .address-item {
+        padding: 46px 82px 0 44px;
+        line-height: 1;
+        box-shadow: 0 0 18px rgba($color: #4a4a4a, $alpha: 0.24);
+        border-radius: 20px;
+        & + .address-item {
+            margin-top: 30px;
+        }
+    }
+    .address-item-main {
+        display: flex;
+        align-items: center;
+        .text-avatar {
+            width: 60px;
+            height: 60px;
+            line-height: 60px;
+            text-align: center;
+            background: url('@/assets/images/address_user_bg.png') no-repeat;
+            font-size: 32px;
+            color: #fff;
+        }
+        dl {
+            margin-left: 30px;
+            flex: 1;
+            dt {
+                font-size: 26px;
+                color: #403f3f;
+            }
+            dd {
+                margin-top: 26px;
+                font-size: 22px;
+                color: #403f3f;
+            }
+        }
+        button {
+            border: none;
+            cursor: pointer;
+            width: 120px;
+            height: 40px;
+            border-radius: 20px;
+            background: #43c9d5;
+            font-size: 18px;
+            color: #fff;
+        }
+    }
+    .address-item-bottom {
+        margin-top: 30px;
+        padding: 20px 0;
+        border-top: 1px solid #dcdcdc;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        .ivu-radio-checked .ivu-radio-inner {
+            border-color: $primaryColor;
+        }
+        .ivu-radio-inner:after {
+            background-color: $primaryColor;
+        }
+        .btn-delete {
+            font-size: 16px;
+            color: #403f3f;
+            transition: 0.3s;
+            &:hover {
+                color: $primaryColor;
+            }
+        }
+    }
+    .order-detail-box {
+        border-radius: 15px;
+        box-shadow: 0 0 13px rgba($color: #4a4a4a, $alpha: 0.22);
+        line-height: 1;
+        padding: 30px 40px;
+        .address-form {
+            width: 90%;
+            margin: 40px 0;
+            .filter-section-area{
+                margin: 0 0 30px 0;
+                .ivu-form-item-content{
+                    margin-left:0!important;
+                    width: 90%;
+                }
+            }
+            .ivu-form-item-label {
+                font-size: 22px;
+                color: #979494;
+            }
+            .ivu-switch-checked {
+                border-color: $primaryColor;
+                background-color: $primaryColor;
+            }
+            .ivu-poptip{
+                width: 100%;
+                .ivu-poptip-rel{
+                    width: 100%;
+                }
+            }
+            .box{
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+            .btn-submit {
+                width: 180px;
+                height: 48px;
+                border-radius: 48px;
+                font-size: 22px;
+                background-color: $primaryColor;
+                border-color: $primaryColor;
+            }
+        }
+    }
+}

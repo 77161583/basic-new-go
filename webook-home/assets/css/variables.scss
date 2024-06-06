@@ -1,0 +1,22 @@
+$primaryColor: #e5002d;
+
+$contentWith: 1424px;
+
+@mixin customTextLines($num: 1) {
+    @if $num==1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    } @else {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: $num;
+    }
+}
+
+@mixin filterIconToWhite {
+    filter: brightness(0) invert(1);
+    -webkit-filter: brightness(0) invert(1);
+}
