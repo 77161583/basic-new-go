@@ -1,7 +1,8 @@
 package web
 
 import (
-	"fmt"
+	"basic-new-go/webook/internal/domain"
+	"basic-new-go/webook/internal/service"
 	regexp "github.com/dlclark/regexp2"
 	"github.com/gin-gonic/gin"
 	"net/http"
@@ -9,11 +10,12 @@ import (
 
 // UserHandler 定义所有跟user用户有关的路由
 type UserHandler struct {
+	svc         *service.UserService
 	emailExp    *regexp.Regexp
 	passwordExp *regexp.Regexp
 }
 
-func NewUserHandler() *UserHandler {
+func NewUserHandler(svc *service.UserService) *UserHandler {
 	const (
 		emailRegex    = "^[a-z0-9_\\.\\-\\+]+@[a-z0-9\\-]+(\\.[a-z0-9\\-]+)*$"
 		passwordRegex = `^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-])[A-Za-z0-9!@#$%^&*()_+=-]{8,}$`
@@ -21,6 +23,7 @@ func NewUserHandler() *UserHandler {
 	emailExp := regexp.MustCompile(emailRegex, regexp.None)
 	passwordExp := regexp.MustCompile(passwordRegex, regexp.None)
 	return &UserHandler{
+		svc:         svc,
 		emailExp:    emailExp,
 		passwordExp: passwordExp,
 	}
@@ -71,8 +74,17 @@ func (u *UserHandler) SingUp(ctx *gin.Context) {
 		return
 	}
 
+	err = u.svc.SignUp(ctx, domain.User{
+		Email:    res.Email,
+		Password: res.Password,
+	})
+
+	if err != nil {
+		ctx.String(http.StatusOK, "系统错误")
+		return
+	}
 	ctx.String(http.StatusOK, "注册成功")
-	fmt.Printf("%v", res)
+	//fmt.Printf("%v", res)
 }
 func (u *UserHandler) Login(ctx *gin.Context) {
 
