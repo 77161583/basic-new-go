@@ -3,7 +3,9 @@ package web
 import (
 	"basic-new-go/webook/internal/domain"
 	"basic-new-go/webook/internal/service"
+	"errors"
 	regexp "github.com/dlclark/regexp2"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -79,6 +81,11 @@ func (u *UserHandler) SingUp(ctx *gin.Context) {
 		Password: res.Password,
 	})
 
+	if errors.Is(err, service.ErrUserDuplicateEmail) {
+		ctx.String(http.StatusOK, "重复邮箱，请换一个")
+		return
+	}
+
 	if err != nil {
 		ctx.String(http.StatusOK, "系统错误")
 		return
@@ -87,11 +94,37 @@ func (u *UserHandler) SingUp(ctx *gin.Context) {
 	//fmt.Printf("%v", res)
 }
 func (u *UserHandler) Login(ctx *gin.Context) {
+	type LoginReq struct {
+		Email    string `json:"email"`
+		Password string `json:"password"`
+	}
+	var req LoginReq
+	if err := ctx.Bind(&req); err != nil {
+		return
+	}
+	user, err := u.svc.Login(ctx, req.Email, req.Password)
+	if errors.Is(err, service.ErrInvalidUserOrPassword) {
+		ctx.String(http.StatusOK, "用户名或密码不对")
+		return
+	}
+	if err != nil {
+		ctx.String(http.StatusOK, "系统错误")
+		return
+	}
 
+	//登录/步骤2
+	//登陆成功之后设置session
+	sess := sessions.Default(ctx)
+	//设置session的值
+	sess.Set("userId", user.Id)
+	sess.Save()
+	ctx.String(http.StatusOK, "登录成功")
+
+	return
 }
 func (u *UserHandler) Edit(ctx *gin.Context) {
 
 }
 func (u *UserHandler) Profile(ctx *gin.Context) {
-
+	ctx.String(http.StatusOK, "i am profile")
 }

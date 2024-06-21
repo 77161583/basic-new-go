@@ -5,7 +5,10 @@ import (
 	"basic-new-go/webook/internal/repository/dao"
 	"basic-new-go/webook/internal/service"
 	"basic-new-go/webook/internal/web"
+	"basic-new-go/webook/internal/web/middleware"
 	"github.com/gin-contrib/cors"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -29,6 +32,7 @@ func initWebServer() *gin.Engine {
 	server.Use(func(ctx *gin.Context) {
 		println("第二个middleware")
 	})
+
 	//这里的use 会作用域于当前server的全部路由
 	server.Use(cors.New(cors.Config{
 		//AllowOrigins: []string{"http://172.27.24.126:3000/"},
@@ -44,6 +48,15 @@ func initWebServer() *gin.Engine {
 		},
 		MaxAge: 12 * time.Hour,
 	}))
+
+	//登录/步骤1
+	store := cookie.NewStore([]byte("secret"))
+	server.Use(sessions.Sessions("mysession", store))
+	//登录/步骤3
+	server.Use(middleware.NewLoginMiddlewareBuilder().
+		IgnorePaths("users/login").
+		IgnorePaths("users/signup").
+		Build())
 	return server
 }
 
