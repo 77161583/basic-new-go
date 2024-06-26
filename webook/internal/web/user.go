@@ -4,10 +4,13 @@ import (
 	"basic-new-go/webook/internal/domain"
 	"basic-new-go/webook/internal/service"
 	"errors"
+	"fmt"
 	regexp "github.com/dlclark/regexp2"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"net/http"
+	"strconv"
+	"strings"
 )
 
 // UserHandler 定义所有跟user用户有关的路由
@@ -15,19 +18,23 @@ type UserHandler struct {
 	svc         *service.UserService
 	emailExp    *regexp.Regexp
 	passwordExp *regexp.Regexp
+	birthdayExp *regexp.Regexp
 }
 
 func NewUserHandler(svc *service.UserService) *UserHandler {
 	const (
-		emailRegex    = "^[a-z0-9_\\.\\-\\+]+@[a-z0-9\\-]+(\\.[a-z0-9\\-]+)*$"
-		passwordRegex = `^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-])[A-Za-z0-9!@#$%^&*()_+=-]{8,}$`
+		emailRegex            = "^[a-z0-9_\\.\\-\\+]+@[a-z0-9\\-]+(\\.[a-z0-9\\-]+)*$"
+		passwordRegex         = `^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-])[A-Za-z0-9!@#$%^&*()_+=-]{8,}$`
+		birthdayRegExpPattern = `^\d{4}-\d{2}-\d{2}$`
 	)
 	emailExp := regexp.MustCompile(emailRegex, regexp.None)
 	passwordExp := regexp.MustCompile(passwordRegex, regexp.None)
+	birthdayRegExp := regexp.MustCompile(birthdayRegExpPattern, regexp.None)
 	return &UserHandler{
 		svc:         svc,
 		emailExp:    emailExp,
 		passwordExp: passwordExp,
+		birthdayExp: birthdayRegExp,
 	}
 }
 
@@ -123,8 +130,75 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 	return
 }
 func (u *UserHandler) Edit(ctx *gin.Context) {
+	type EditReq struct {
+		Id              int64  `json:"id"`
+		NickName        string `json:"nickName"`
+		Birthday        string `json:"birthday"`
+		PersonalProfile string `json:"personalProfile"`
+	}
+	var req EditReq
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		ctx.String(http.StatusBadRequest, "参数绑定失败")
+		return
+	}
 
+	// 打印接收到的请求参数
+	fmt.Printf("Received Edit Request: %+v\n", req)
+
+	//参数校验
+	if req.NickName != "" {
+		if len(req.NickName) < 6 || len(req.NickName) > 30 {
+			ctx.String(http.StatusOK, "昵称大小需要保持2~10个汉字")
+			return
+		}
+	}
+	if req.Birthday != "" {
+		isBirthday, _ := u.birthdayExp.MatchString(req.Birthday)
+		if !isBirthday {
+			ctx.String(http.StatusOK, "生日日期格式不正确，应为YYYY-MM-DD格式")
+			return
+		}
+	}
+	if req.PersonalProfile == "" {
+		ctx.String(http.StatusOK, "个人简介不能为空")
+		return
+	}
+
+	err := u.svc.Edit(ctx, domain.User{
+		Id:              req.Id,
+		NickName:        strings.TrimSpace(req.NickName),
+		Birthday:        strings.TrimSpace(req.Birthday),
+		PersonalProfile: strings.TrimSpace(req.PersonalProfile),
+	})
+	if errors.Is(err, service.ErrUserIdNotFund) {
+		ctx.String(http.StatusOK, "用户不存在")
+		return
+	}
+	if err != nil {
+		// 打印错误信息
+		fmt.Printf("Service Edit Error: %v\n", err)
+		ctx.String(http.StatusOK, "更新失败")
+		return
+	}
+	ctx.String(http.StatusOK, "更新成功")
 }
 func (u *UserHandler) Profile(ctx *gin.Context) {
-	ctx.String(http.StatusOK, "i am profile")
+	// 从 URL 查询参数中获取 id
+	idStr := ctx.Query("id")
+	id, err := strconv.ParseInt(idStr, 10, 64)
+	if err != nil {
+		ctx.String(http.StatusBadRequest, "无效的用户 ID")
+		return
+	}
+	userData, err := u.svc.Profile(ctx, id)
+	if err != nil {
+		if errors.Is(err, service.ErrUserIdNotFund) {
+			ctx.String(http.StatusNotFound, "用户不存在")
+			return
+		}
+		// 其他错误处理
+		ctx.String(http.StatusInternalServerError, "获取用户数据失败")
+		return
+	}
+	ctx.JSON(http.StatusOK, userData)
 }

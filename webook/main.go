@@ -21,7 +21,7 @@ func main() {
 	server := initWebServer()
 	u := initUser(db)
 	u.RegisterRoutes(server)
-	server.Run()
+	server.Run(":8080")
 }
 
 func initWebServer() *gin.Engine {

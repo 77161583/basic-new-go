@@ -5,11 +5,13 @@ import (
 	"basic-new-go/webook/internal/repository"
 	"context"
 	"errors"
+	"fmt"
 	"golang.org/x/crypto/bcrypt"
 )
 
 var ErrUserDuplicateEmail = repository.ErrUserDuplicateEmail
 var ErrInvalidUserOrPassword = errors.New("账号/邮箱或密码错误")
+var ErrUserIdNotFund = errors.New("用户信息不存在")
 
 type UserService struct {
 	repo *repository.UserRepository
@@ -48,4 +50,25 @@ func (svc *UserService) Login(ctx context.Context, email, password string) (doma
 	}
 	return u, err
 
+}
+
+func (svc *UserService) Edit(ctx context.Context, u domain.User) error {
+	// 打印编辑的用户信息
+	fmt.Printf("Editing User: %+v\n", u)
+
+	// 查看id是否存在是否被删除了
+	_, err := svc.repo.FindById(ctx, u.Id)
+	if errors.Is(err, repository.ErrUserNotFound) {
+		return ErrUserIdNotFund
+	}
+	return svc.repo.Update(ctx, u)
+}
+
+func (svc *UserService) Profile(ctx context.Context, id int64) (domain.User, error) {
+	// 查看id是否存在是否被删除了
+	userData, err := svc.repo.FindById(ctx, id)
+	if errors.Is(err, repository.ErrUserNotFound) {
+		return domain.User{}, ErrUserIdNotFund
+	}
+	return userData, nil
 }

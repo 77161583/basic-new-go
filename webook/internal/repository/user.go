@@ -31,6 +31,22 @@ func (r *UserRepository) FindByEmail(ctx context.Context, email string) (domain.
 	}, nil
 }
 
+func (r *UserRepository) FindById(ctx context.Context, id int64) (domain.User, error) {
+	u, err := r.dao.FindById(ctx, id)
+	if err != nil {
+		return domain.User{}, err
+	}
+	return domain.User{
+		Id:              u.Id,
+		Email:           u.Email,
+		NickName:        u.NickName,
+		Birthday:        u.Birthday,
+		PersonalProfile: u.PersonalProfile,
+		IsDel:           u.IsDel,
+		//Password:        u.Password,
+	}, nil
+}
+
 func (r *UserRepository) Created(ctx context.Context, u domain.User) error {
 	return r.dao.Insert(ctx, dao.User{
 		Email:    u.Email,
@@ -40,9 +56,14 @@ func (r *UserRepository) Created(ctx context.Context, u domain.User) error {
 	//如果有缓存，这里操作缓存
 }
 
-func (r *UserRepository) FindById(int642 int64) {
-	//先从cache找
-	//再从dao找
-	//找到会写cache
+func (r *UserRepository) Update(ctx context.Context, u domain.User) error {
+	return r.dao.Update(ctx, dao.User{
+		Id:              u.Id, // 添加ID
+		NickName:        u.NickName,
+		Birthday:        u.Birthday,
+		PersonalProfile: u.PersonalProfile,
+		IsDel:           u.IsDel,
+	})
 
+	//如果有缓存，这里操作缓存
 }
