@@ -8,10 +8,11 @@ import (
 	"basic-new-go/webook/internal/web/middleware"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"log"
 	"strings"
 	"time"
 )
@@ -50,12 +51,27 @@ func initWebServer() *gin.Engine {
 	}))
 
 	//登录/步骤1
-	store := cookie.NewStore([]byte("secret"))
+	//store := memstore2.NewStore(
+	//	[]byte("%WMN&RKk6rYR1CDcihlEOCjNOGn#GL^G"),
+	//	[]byte("LtEnUv74mOe17njL5tClRTsN%ymQTZr7"),
+	//)
+	store, err := redis.NewStore(
+		16, // 最大连接池大小
+		"tcp",
+		"localhost:6379",
+		"", // Redis 密码
+		[]byte("2tbTPFVQR4Io8DymwX4H6BECfoswiZ8Y"),
+		[]byte("nHNT6o6NQH785UrN35bRIau7toG2YJVM"),
+	)
+	if err != nil {
+		log.Fatalf("Failed to initialize Redis store: %v", err)
+	}
+	//store := cookie.NewStore([]byte("secret"))
 	server.Use(sessions.Sessions("mysession", store))
 	//登录/步骤3
 	server.Use(middleware.NewLoginMiddlewareBuilder().
-		IgnorePaths("users/login").
-		IgnorePaths("users/signup").
+		IgnorePaths("/users/login").
+		IgnorePaths("/users/signup").
 		Build())
 	return server
 }

@@ -124,9 +124,25 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 	sess := sessions.Default(ctx)
 	//设置session的值
 	sess.Set("userId", user.Id)
+	sess.Options(sessions.Options{
+		//生产环境需要设置 https
+		//Secure:   true,
+		//HttpOnly: true,
+		MaxAge: 60,
+	})
 	sess.Save()
 	ctx.String(http.StatusOK, "登录成功")
 
+	return
+}
+func (u *UserHandler) LoginOut(ctx *gin.Context) {
+	sess := sessions.Default(ctx)
+	//设置session的值
+	sess.Options(sessions.Options{
+		MaxAge: 1, //cookie过期时间
+	})
+	sess.Save()
+	ctx.String(http.StatusOK, "退出登录成功")
 	return
 }
 func (u *UserHandler) Edit(ctx *gin.Context) {
