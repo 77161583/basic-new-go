@@ -70,12 +70,12 @@ export default {
   },
 
   proxy: {
-    '/gp61': {
+    '/go': {
       target: env[process.env.NODE_ENV].BASE_API, // 目标接口域名
       changeOrigin: true, // 表示是否跨域
       withCredentials: true,
       pathRewrite: {
-        '^/gp61': '' // 把 /api 替换成 ''
+        '^/go': '' // 把 /api 替换成 ''
       }
     },
     '/web': {

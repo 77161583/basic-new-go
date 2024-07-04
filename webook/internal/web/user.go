@@ -70,6 +70,7 @@ func (u *UserHandler) SingUp(ctx *gin.Context) {
 		return
 	}
 	if !ok {
+		fmt.Println(err)
 		ctx.String(http.StatusOK, "你的邮箱格式不正确")
 		return
 	}
@@ -97,8 +98,11 @@ func (u *UserHandler) SingUp(ctx *gin.Context) {
 		ctx.String(http.StatusOK, "系统错误")
 		return
 	}
-	ctx.String(http.StatusOK, "注册成功")
-	//fmt.Printf("%v", res)
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"message": "注册成功",
+	})
+	//ctx.String(http.StatusOK, "注册成功")
 }
 func (u *UserHandler) Login(ctx *gin.Context) {
 	type LoginReq struct {
@@ -131,7 +135,12 @@ func (u *UserHandler) Login(ctx *gin.Context) {
 		MaxAge: 60,
 	})
 	sess.Save()
-	ctx.String(http.StatusOK, "登录成功")
+
+	ctx.JSON(http.StatusOK, gin.H{
+		"code":    http.StatusOK,
+		"message": "登录成功",
+	})
+	//ctx.String(http.StatusOK, "登录成功")
 
 	return
 }
