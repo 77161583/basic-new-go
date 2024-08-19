@@ -6,12 +6,15 @@ import (
 	"basic-new-go/webook/internal/service"
 	"basic-new-go/webook/internal/web"
 	"basic-new-go/webook/internal/web/middleware"
+	"github.com/gin-contrib/cors"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/redis"
 	"github.com/gin-gonic/gin"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"log"
+	"strings"
+	"time"
 )
 
 func main() {
@@ -32,20 +35,21 @@ func initWebServer() *gin.Engine {
 	})
 
 	//这里的use 会作用域于当前server的全部路由
-	//server.Use(cors.New(cors.Config{
-	//	//AllowOrigins: []string{"http://172.27.24.126:3000/"},
-	//	AllowMethods: []string{"POST", "GET"},
-	//	AllowHeaders: []string{"Content-Type", "application/x-www-form-urlencoded;charset=UTF-8"},
-	//	//是否允许你带cookie
-	//	AllowCredentials: true,
-	//	AllowOriginFunc: func(origin string) bool {
-	//		if strings.HasPrefix(origin, "http://172.30.64.1:3000/") {
-	//			return true
-	//		}
-	//		return strings.Contains(origin, "yourcompany.com")
-	//	},
-	//	MaxAge: 12 * time.Hour,
-	//}))
+	server.Use(cors.New(cors.Config{
+		//AllowOrigins: []string{"http://172.27.24.126:3000/"},
+		//AllowMethods:  []string{"POST", "GET"},
+		AllowHeaders:  []string{"Content-Type", "Authorization"},
+		ExposeHeaders: []string{"x-jwt-token"},
+		//是否允许你带cookie
+		AllowCredentials: true,
+		AllowOriginFunc: func(origin string) bool {
+			if strings.HasPrefix(origin, "http://localhost") {
+				return true
+			}
+			return strings.Contains(origin, "http://172.19.160.1:3000")
+		},
+		MaxAge: 12 * time.Hour,
+	}))
 
 	//登录/步骤1
 	//store := memstore2.NewStore(
