@@ -58,10 +58,8 @@ const axiosPlugin: Plugin = ({ $axios, store, isDev, redirect, error: nuxtError 
     const statusCode = parseInt(error.response && error.response.status)
     // 用户token失效时，主动清除掉本地相关信息
     if (statusCode === 401) {
-      store.dispatch('user/logout')
-      // if (process.client) {
-      //   window.location.reload()
-      // }
+      window.location.href = '/login'
+      // store.dispatch('user/logout')
     }
     // 开发模式下直接打印异常原因便于调试，否则转到异常页面
     if (isDev) {
