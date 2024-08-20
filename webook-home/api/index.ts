@@ -1,7 +1,7 @@
 import { NuxtAxiosInstance } from '@nuxtjs/axios'
 export default ($axios: NuxtAxiosInstance) => ({
 
-  // 资讯相关接口
+  // 注册
   getSignup(data: {}) {
     return $axios.$post('/go/users/signup', data)
   },

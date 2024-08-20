@@ -70,10 +70,13 @@ func initWebServer() *gin.Engine {
 	//store := cookie.NewStore([]byte("secret"))
 	server.Use(sessions.Sessions("mysession", store))
 	//登录/步骤3
-	server.Use(middleware.NewLoginMiddlewareBuilder().
+	//server.Use(middleware.NewLoginMiddlewareBuilder().
+	//	IgnorePaths("/users/login").
+	//	IgnorePaths("/users/signup").
+	//	Build())
+	server.Use(middleware.NewLoginJWTMiddlewareBuilder().
 		IgnorePaths("/users/login").
-		IgnorePaths("/users/signup").
-		Build())
+		IgnorePaths("/users/signup").Build())
 	return server
 }
 

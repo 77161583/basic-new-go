@@ -33,13 +33,25 @@ declare module 'vuex/types/index' {
 // https://typescript.nuxtjs.org/zh-hant/cookbook/plugins/
 const axiosPlugin: Plugin = ({ $axios, store, isDev, redirect, error: nuxtError }, inject) => {
   $axios.onRequest((config) => {
-    const token = store.state.user.tokenVal
-    if (token) {
-      config.headers.hrttoken = token
+    const jwtToken = localStorage.getItem('jwtToken')
+    console.log('Authorization Header Set:', config.headers.Authorization) // 调试输出
+    // 如果 token 存在，则在请求头中添加 Authorization 头
+    if (jwtToken) {
+      config.headers.Authorization = `Bearer ${jwtToken}`
     }
     if (isDev) {
       console.log(`[${process.client ? 'client' : 'server'} side] ${config.method} ${config.url}`)
     }
+  })
+
+  // 响应拦截器
+  $axios.onResponse((response) => {
+    // 获取响应头中的 x-jwt-token
+    const jwtToken = response.headers['x-jwt-token']
+    if (jwtToken) {
+      localStorage.setItem('jwtToken', jwtToken)
+    }
+    return response
   })
 
   $axios.onError((error: any) => {
@@ -47,9 +59,9 @@ const axiosPlugin: Plugin = ({ $axios, store, isDev, redirect, error: nuxtError 
     // 用户token失效时，主动清除掉本地相关信息
     if (statusCode === 401) {
       store.dispatch('user/logout')
-      if (process.client) {
-        window.location.reload()
-      }
+      // if (process.client) {
+      //   window.location.reload()
+      // }
     }
     // 开发模式下直接打印异常原因便于调试，否则转到异常页面
     if (isDev) {

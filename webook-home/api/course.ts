@@ -15,7 +15,7 @@ export default ($axios: NuxtAxiosInstance) => ({
   // 专业课，公需课详情
   getClassDetail(data:{}) {
     const params = qs.stringify(data)
-    return $axios.$get('/gp61/gp6/lms/stu/course/courseDetail?' + params)
+    return $axios.$get('/go/users/profile?' + params)
   },
 
   // 文章详情
